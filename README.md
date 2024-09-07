@@ -1,4 +1,4 @@
-# Importanr Object Labeling Tool
+# Important Object Labeling Tool
 
 This Python script provides a graphical user interface (GUI) for identifying which targets on an image are important and which are not, following the object detection results from the YOLO series or other powerful models, and to rank the importance of the significant targets. 
 
