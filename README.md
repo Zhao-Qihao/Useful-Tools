@@ -1,6 +1,6 @@
-# Image Labeling Tool
+# Importanr Object Labeling Tool
 
-This Python script provides a graphical user interface (GUI) for labeling images with bounding boxes. It allows users to load images, draw boxes around objects of interest, and save the annotations to a file.
+This Python script provides a graphical user interface (GUI) for identifying which targets on an image are important and which are not, following the object detection results from the YOLO series or other powerful models, and to rank the importance of the significant targets. 
 
 ## Structure
 TODO
@@ -10,16 +10,11 @@ TODO
 - Load images from a folder or a single image file.
 - Draw bounding boxes on images using right-click and drag.
 - Load and display existing ground truth data from text files.
+- Select important object bounding boxes.
+- Rank the importance of the targets.
 - Save new bounding box annotations to a ground truth file.
 - Navigate through multiple images in a sequence.
 - Reset current image to its original state without annotations.
-
-## Requirements
-
-- Python 3.x
-- Tkinter for GUI
-- Pillow for image processing
-- os and argparse for file and command-line argument handling
 
 ## Installation
 
@@ -32,12 +27,12 @@ pip install tk Pillow
 ## Usage
 
 1. Run the script from the command line by executing python labeling_tool.py.
-2. Use the 'Load Image Folder' button to load all images from a specified directory.
-3. Use the 'Load Single Image' button to load a single image file.
-4. Click and drag the right mouse button to draw a bounding box on the image.
+2. Use the 'Load Image Folder' button to load all images from a specified directory. While loading the image, the corresponding ground truth file will also be loaded, and the bounding boxes will be displayed on the image. At this point, you can click on the bounding box that you consider important with the mouse, and it will be saved automatically.
+3. Use the 'Reset Current Image' button to clear all annotations and ground truth data for the current image.
+4. Use the 'Draw Box' button When the ground truth file is missing some bounding box information for the targets and drag the right mouse button to draw a bounding box on the image, The bounding boxes you draw will be automatically appended and saved in the ground truth file without overwriting the original ground truth file. And then you need to click 'Reset Current Image' button to reload the image and boxes.
 5. Use the 'Next Image' button to move to the next image in the sequence.
-6. Use the 'Reset Current Image' button to clear all annotations and ground truth data for the current image.
-7. The ground truth data is saved automatically as you draw new bounding boxes.
+6. Use the 'Load Single Image' button to load a single image file.
+
 
 Example:
 ```bash
