@@ -76,8 +76,10 @@ class LabelTool:
 
     def load_single_image(self):
         initial_dir = os.path.expanduser(self.img_root_dir)
-        file_path = filedialog.askopenfilename(initialdir=initial_dir, filetypes=[("Image Files", "*.jpg;*.jpeg;*.png")])
+        file_path = filedialog.askopenfilename(initialdir=initial_dir, filetypes = [("All Files", "*.*"), ("Image Files", "*.jpg;*.jpeg;*.png"), ("Text Files", "*.txt")])
+        print("Selected single image path:{}".format(file_path))
         if not file_path:
+            print('No file selected.')
             return
 
         # 加载单张图片及其对应的 ground truth 文件
