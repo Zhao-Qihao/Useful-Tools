@@ -253,7 +253,10 @@ class LabelTool:
         confidence = self.confidences[index]
 
         # 打开输出文件
-        self.output_file = open(self.output_file_path, 'w')
+        if self.selection_count == 0:
+            self.output_file = open(self.output_file_path, 'w')
+        else:
+            self.output_file = open(self.output_file_path, 'a')
         # 追加到文件中
         if self.output_file:
             # 在保存时添加递增的整数
