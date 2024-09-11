@@ -5,9 +5,9 @@ import os
 import math
 import argparse
 
-def get_gt_path(image_path, gt_root_dir="/data/zqh/DADA2000/DADA2000-detection"):
+def get_gt_path(image_path, img_root_dir, gt_root_dir):
     """根据图片路径获取ground truth文件路径"""
-    relative_path = os.path.relpath(image_path, start="/data/zqh/DADA2000/DADA2000")
+    relative_path = os.path.relpath(image_path, start=img_root_dir)
     relative_path = os.path.dirname(relative_path)  # 移除文件名
     relative_path = os.path.dirname(relative_path)  # 移除 'images' 目录
     relative_path = os.path.join(relative_path, os.path.basename(image_path))  # 加上文件名
@@ -16,9 +16,10 @@ def get_gt_path(image_path, gt_root_dir="/data/zqh/DADA2000/DADA2000-detection")
     return gt_path
 
 class LabelTool:
-    def __init__(self, master, gt_root_dir):
+    def __init__(self, master, img_root_dir, gt_root_dir):
         self.master = master
         master.title("Labeling Tool")
+        self.img_root_dir = img_root_dir
         self.gt_root_dir = gt_root_dir
 
         # 初始化变量
@@ -58,7 +59,7 @@ class LabelTool:
         btn_draw_box.grid(row=0, column=4)
 
     def load_image_folder(self):
-        initial_dir = os.path.expanduser("/data/zqh/DADA2000/DADA2000")
+        initial_dir = os.path.expanduser(self.img_root_dir)
         folder_path = filedialog.askdirectory(initialdir=initial_dir)
         if not folder_path:
             return
@@ -73,7 +74,7 @@ class LabelTool:
         self.load_image(self.image_files[self.current_index])
 
     def load_single_image(self):
-        initial_dir = os.path.expanduser("/data/zqh/DADA2000/DADA2000")
+        initial_dir = os.path.expanduser(self.img_root_dir)
         file_path = filedialog.askopenfilename(initialdir=initial_dir, filetypes=[("Image Files", "*.jpg;*.jpeg;*.png")])
         if not file_path:
             return
@@ -83,7 +84,7 @@ class LabelTool:
 
     def load_image(self, image_path):
         self.image_path = image_path
-        self.gt_path = get_gt_path(self.image_path, self.gt_root_dir)
+        self.gt_path = get_gt_path(self.image_path, self.img_root_dir, self.gt_root_dir)
 
         self.image = Image.open(self.image_path)
         self.photo = ImageTk.PhotoImage(self.image)
@@ -261,9 +262,11 @@ class LabelTool:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Labeling Tool for Images')
-    parser.add_argument('--gt_root_dir', type=str, default="/data/zqh/DADA2000/DADA2000-detection",
+    parser.add_argument('--img_root_dir', type=str, default="/sdc1/zqh/data/DADA2000-critical/DADA2000-critical",
+                        help='Root directory for image files')
+    parser.add_argument('--gt_root_dir', type=str, default="/sdc1/zqh/data/DADA2000-critical/DADA2000-critical-detection",
                         help='Root directory for ground truth files')
     args = parser.parse_args()
     root = tk.Tk()
-    app = LabelTool(root, gt_root_dir=args.gt_root_dir)
+    app = LabelTool(root, img_root_dir=args.img_root_dir, gt_root_dir=args.gt_root_dir)
     root.mainloop()
