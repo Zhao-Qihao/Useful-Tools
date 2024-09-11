@@ -33,6 +33,7 @@ class LabelTool:
         self.current_index = 0
         self.selection_count = 0
         self.new_bounding_boxes = []
+        self.closest_bbox_set = set()       
 
         # 创建按钮
         self.create_buttons(master)
@@ -178,7 +179,7 @@ class LabelTool:
         self.confidences.clear()
         self.new_bounding_boxes.clear()
         self.selection_count = 0  # 重置选择计数器
-        
+        self.closest_bbox_set.clear()        
 
         # 检查是否有更多的图片
         if self.current_index + 1 < len(self.image_files):
@@ -195,6 +196,7 @@ class LabelTool:
         self.confidences.clear()
         self.new_bounding_boxes.clear()
         self.selection_count = 0  # 重置选择计数器
+        self.closest_bbox_set.clear()   
 
         # 关闭输出文件句柄
         if self.output_file:
@@ -229,12 +231,13 @@ class LabelTool:
                     min_distance = distance
                     closest_bbox = i
 
-        if closest_bbox is not None:
+        if closest_bbox is not None and closest_bbox not in self.closest_bbox_set:
             # 高亮选中的边界框
             self.highlight_selected_bbox(closest_bbox)
 
             # 保存对应的 ground truth
             self.save_selected_bbox(closest_bbox)
+            self.closest_bbox_set.add(closest_bbox)
 
     def highlight_selected_bbox(self, index):
         # 绘制所有边界框
