@@ -100,7 +100,7 @@ class LabelTool:
         self.new_bounding_boxes = []  # 新增边界框列表
 
     def load_ground_truth(self):
-        # 关闭之前的输出文件句柄
+        # 关闭前一个文件的输出文件句柄
         if self.output_file:
             self.output_file.close()
             self.output_file = None
@@ -109,9 +109,6 @@ class LabelTool:
         base_name, ext = os.path.splitext(os.path.basename(self.gt_path))
         output_file_name = f"{base_name}_impo{ext}"
         self.output_file_path = os.path.join(os.path.dirname(self.gt_path), output_file_name)
-
-        # 打开输出文件
-        self.output_file = open(self.output_file_path, 'w')
 
         with open(self.gt_path, 'r') as f:
             for line in f:
@@ -255,6 +252,8 @@ class LabelTool:
         label = self.labels[index]
         confidence = self.confidences[index]
 
+        # 打开输出文件
+        self.output_file = open(self.output_file_path, 'w')
         # 追加到文件中
         if self.output_file:
             # 在保存时添加递增的整数
