@@ -77,6 +77,7 @@ class LabelTool:
     def load_image_folder(self):
         # 初始化
         self.initialize()
+        self.current_index = 0  # 重置当前image_files索引
 
         initial_dir = os.path.expanduser(self.img_root_dir)
         folder_path = filedialog.askdirectory(initialdir=initial_dir)
