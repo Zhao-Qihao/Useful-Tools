@@ -63,6 +63,10 @@ class LabelTool:
         btn_reset_current_image.grid(row=0, column=5)
         btn_draw_box.grid(row=0, column=6)
 
+        # 绑定键盘事件
+        master.bind("<Left>", lambda event: self.previous_image())
+        master.bind("<Right>", lambda event: self.next_image())
+
     def initialize(self):
         """
         初始化函数，可以在此处进行一些基本的设置或资源加载。
