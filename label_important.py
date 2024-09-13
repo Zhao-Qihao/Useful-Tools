@@ -47,7 +47,7 @@ class LabelTool:
     def create_buttons(self, master):
         # 创建按钮
         btn_load_image_folder = tk.Button(master, text="Load Image Folder", command=self.load_image_folder)
-        btn_load_image = tk.Button(master, text="Load Single Image", command=self.load_single_image)
+        btn_load_single_image = tk.Button(master, text="Load Single Image", command=self.load_single_image)
         btn_previous_image = tk.Button(master, text="Previous Image", command=self.previous_image)
         btn_next_image = tk.Button(master, text="Next Image", command=self.next_image)
         btn_back2first = tk.Button(master, text="Back to First Image", command=self.back_to_first_image)
@@ -59,7 +59,7 @@ class LabelTool:
         btn_previous_image.grid(row=0, column=1)
         btn_next_image.grid(row=0, column=2)
         btn_back2first.grid(row=0, column=3)
-        btn_load_image.grid(row=0, column=4)
+        btn_load_single_image.grid(row=0, column=4)
         btn_reset_current_image.grid(row=0, column=5)
         btn_draw_box.grid(row=0, column=6)
 
