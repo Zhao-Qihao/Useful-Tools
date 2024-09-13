@@ -40,7 +40,7 @@ class LabelTool:
 
         # 创建画布
         self.canvas = tk.Canvas(master, width=2000, height=2000)
-        self.canvas.grid(row=1, column=0, columnspan=5)  # 画布占据所有列
+        self.canvas.grid(row=1, column=0, columnspan=7)  # 画布占据所有列
         # 绑定事件
         self.canvas.bind("<Button-1>", self.on_click)
 
@@ -48,16 +48,20 @@ class LabelTool:
         # 创建按钮
         btn_load_image_folder = tk.Button(master, text="Load Image Folder", command=self.load_image_folder)
         btn_load_image = tk.Button(master, text="Load Single Image", command=self.load_single_image)
+        btn_previous_image = tk.Button(master, text="Previous Image", command=self.previous_image)
         btn_next_image = tk.Button(master, text="Next Image", command=self.next_image)
+        btn_back2first = tk.Button(master, text="Back to First Image", command=self.back_to_first_image)
         btn_reset_current_image = tk.Button(master, text="Reset Current Image", command=self.reset_current_image)
         btn_draw_box = tk.Button(master, text="Draw Box", command=self.start_drawing_box)
 
         # 使用 grid 布局将按钮放置在画布上方
         btn_load_image_folder.grid(row=0, column=0)
-        btn_next_image.grid(row=0, column=1)
-        btn_load_image.grid(row=0, column=2)
-        btn_reset_current_image.grid(row=0, column=3)
-        btn_draw_box.grid(row=0, column=4)
+        btn_previous_image.grid(row=0, column=1)
+        btn_next_image.grid(row=0, column=2)
+        btn_back2first.grid(row=0, column=3)
+        btn_load_image.grid(row=0, column=4)
+        btn_reset_current_image.grid(row=0, column=5)
+        btn_draw_box.grid(row=0, column=6)
 
     def initialize(self):
         """
@@ -194,10 +198,26 @@ class LabelTool:
         # 初始化
         self.initialize()    
 
-        # 检查是否有更多的图片
+        # 检查当前图片是否为最后一张图片
         if self.current_index + 1 < len(self.image_files):
             self.current_index += 1
             self.load_image(self.image_files[self.current_index])
+
+    def previous_image(self):
+        # 初始化
+        self.initialize()    
+
+        # 检查当前图片是否为第一张图片
+        if self.current_index - 1 < 0:
+            self.current_index = len(self.image_files)
+        self.current_index -= 1
+        self.load_image(self.image_files[self.current_index])
+
+    def back_to_first_image(self):
+        # 初始化
+        self.initialize()
+        self.current_index = 0
+        self.load_image(self.image_files[self.current_index])
 
     def reset_current_image(self):
         # 初始化
