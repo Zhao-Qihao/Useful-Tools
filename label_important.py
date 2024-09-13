@@ -59,7 +59,25 @@ class LabelTool:
         btn_reset_current_image.grid(row=0, column=3)
         btn_draw_box.grid(row=0, column=4)
 
+    def initialize(self):
+        """
+        初始化函数，可以在此处进行一些基本的设置或资源加载。
+        """
+        # 清除画布上的所有元素
+        self.canvas.delete("all")
+
+        # 重置所有与当前图片相关的数据
+        self.bounding_boxes.clear()
+        self.labels.clear()
+        self.confidences.clear()
+        self.new_bounding_boxes.clear()
+        self.selection_count = 0  # 重置选择计数器
+        self.closest_bbox_set.clear()       
+
     def load_image_folder(self):
+        # 初始化
+        self.initialize()
+
         initial_dir = os.path.expanduser(self.img_root_dir)
         folder_path = filedialog.askdirectory(initialdir=initial_dir)
         if not folder_path:
@@ -75,6 +93,9 @@ class LabelTool:
         self.load_image(self.image_files[self.current_index])
 
     def load_single_image(self):
+        # 初始化
+        self.initialize()  
+
         initial_dir = os.path.expanduser(self.img_root_dir)
         file_path = filedialog.askopenfilename(initialdir=initial_dir, filetypes = [("All Files", "*.*"), ("Image Files", "*.jpg;*.jpeg;*.png"), ("Text Files", "*.txt")])
         print("Selected single image path:{}".format(file_path))
@@ -169,16 +190,8 @@ class LabelTool:
         self.new_bounding_boxes.clear()
 
     def next_image(self):
-        # 清除画布上的所有元素
-        self.canvas.delete("all")
-
-        # 重置所有与当前图片相关的数据
-        self.bounding_boxes.clear()
-        self.labels.clear()
-        self.confidences.clear()
-        self.new_bounding_boxes.clear()
-        self.selection_count = 0  # 重置选择计数器
-        self.closest_bbox_set.clear()        
+        # 初始化
+        self.initialize()    
 
         # 检查是否有更多的图片
         if self.current_index + 1 < len(self.image_files):
@@ -186,16 +199,8 @@ class LabelTool:
             self.load_image(self.image_files[self.current_index])
 
     def reset_current_image(self):
-        # 清除画布上的所有元素
-        self.canvas.delete("all")
-
-        # 重置所有与当前图片相关的数据
-        self.bounding_boxes.clear()
-        self.labels.clear()
-        self.confidences.clear()
-        self.new_bounding_boxes.clear()
-        self.selection_count = 0  # 重置选择计数器
-        self.closest_bbox_set.clear()   
+        # 初始化
+        self.initialize()    
 
         # 关闭输出文件句柄
         if self.output_file:
