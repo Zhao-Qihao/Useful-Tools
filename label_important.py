@@ -68,8 +68,7 @@ class LabelTool:
         # 绑定键盘事件
         master.bind("<Left>", lambda event: self.previous_image())
         master.bind("<Right>", lambda event: self.next_image())
-        master.bind("<Up>", lambda event: self.start_drawing_box())
-        master.bind("<Down>", lambda event: self.reset_current_image())
+        master.bind("<Down>", lambda event: self.start_drawing_box())
 
     def initialize(self):
         """
@@ -218,6 +217,8 @@ class LabelTool:
             self.canvas.unbind("<Button-3>")
             self.canvas.unbind("<B3-Motion>")
             self.canvas.unbind("<ButtonRelease-3>")
+
+            self.reset_current_image()
 
     def save_new_bounding_boxes(self):
         # 确保 ground truth 文件已经打开
