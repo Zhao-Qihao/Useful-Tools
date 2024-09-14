@@ -68,6 +68,8 @@ class LabelTool:
         # 绑定键盘事件
         master.bind("<Left>", lambda event: self.previous_image())
         master.bind("<Right>", lambda event: self.next_image())
+        master.bind("<Up>", lambda event: self.start_drawing_box())
+        master.bind("<Down>", lambda event: self.reset_current_image())
 
     def initialize(self):
         """
