@@ -40,13 +40,14 @@ class LabelTool:
 
         # 创建画布
         self.canvas = tk.Canvas(master, width=2000, height=2000)
-        self.canvas.grid(row=1, column=0, columnspan=7)  # 画布占据所有列
+        self.canvas.grid(row=1, column=0, columnspan=8)  # 画布占据所有列
         # 绑定事件
         self.canvas.bind("<Button-1>", self.on_click)
 
     def create_buttons(self, master):
         # 创建按钮
         btn_load_image_folder = tk.Button(master, text="Load Image Folder", command=self.load_image_folder)
+        btn_load_next_folder = tk.Button(master, text="Load Next Folder", command=self.load_next_folder)
         btn_load_single_image = tk.Button(master, text="Load Single Image", command=self.load_single_image)
         btn_previous_image = tk.Button(master, text="Previous Image", command=self.previous_image)
         btn_next_image = tk.Button(master, text="Next Image", command=self.next_image)
@@ -56,12 +57,13 @@ class LabelTool:
 
         # 使用 grid 布局将按钮放置在画布上方
         btn_load_image_folder.grid(row=0, column=0)
-        btn_previous_image.grid(row=0, column=1)
-        btn_next_image.grid(row=0, column=2)
-        btn_back2first.grid(row=0, column=3)
-        btn_load_single_image.grid(row=0, column=4)
-        btn_reset_current_image.grid(row=0, column=5)
-        btn_draw_box.grid(row=0, column=6)
+        btn_load_next_folder.grid(row=0, column=1)
+        btn_previous_image.grid(row=0, column=2)
+        btn_next_image.grid(row=0, column=3)
+        btn_back2first.grid(row=0, column=4)
+        btn_load_single_image.grid(row=0, column=5)
+        btn_reset_current_image.grid(row=0, column=6)
+        btn_draw_box.grid(row=0, column=7)
 
         # 绑定键盘事件
         master.bind("<Left>", lambda event: self.previous_image())
@@ -101,9 +103,38 @@ class LabelTool:
         # 加载第一张图片及其对应的 ground truth 文件
         self.load_image(self.image_files[self.current_index])
 
+    def load_next_folder(self):
+        # 初始化
+        self.initialize()
+        self.current_index = 0  # 重置当前image_files索引
+
+        # 如：self.image_path = "//sdc1/zqh/data/DADA2000-critical/DADA2000-critical/1/013/images/0240.png"
+        # 分割路径，提取倒数第三级目录及其前面的目录
+        head, tail = os.path.split(self.image_path)
+        while tail != "images":
+            head, tail = os.path.split(head)
+        # 现在 head 是 "/sdc1/zqh/data/DADA2000-critical/DADA2000-critical/1/013"
+        # tail 是 "images"
+
+        # 再次分割一次，提取倒数第三级目录及其前面的目录
+        parent_dir, second_last_dir = os.path.split(head)
+        # 现在 head 是 "/sdc1/zqh/data/DADA2000-critical/DADA2000-critical/1"
+        # tail 是 "013"
+        next_folder_second_last_dir = str(int(second_last_dir)+1).zfill(3)
+        next_folder_path = os.path.join(parent_dir, next_folder_second_last_dir, 'images')
+
+        # 获取文件夹下所有图片文件，并按文件名排序
+        self.image_files = sorted([os.path.join(next_folder_path, f) for f in os.listdir(next_folder_path) if f.endswith(('.jpg', '.jpeg', '.png'))])
+        if not self.image_files:
+            messagebox.showwarning("Warning", "No image files found in the selected folder.")
+            return
+
+        # 加载第一张图片及其对应的 ground truth 文件
+        self.load_image(self.image_files[self.current_index])
+
     def load_single_image(self):
         # 初始化
-        self.initialize()  
+        self.initialize()
 
         initial_dir = os.path.expanduser(self.img_root_dir)
         file_path = filedialog.askopenfilename(initialdir=initial_dir, filetypes = [("All Files", "*.*"), ("Image Files", "*.jpg;*.jpeg;*.png"), ("Text Files", "*.txt")])
@@ -117,6 +148,7 @@ class LabelTool:
 
     def load_image(self, image_path):
         self.image_path = image_path
+        print("Selected image path:{}".format(self.image_path))
         self.gt_path = get_gt_path(self.image_path, self.img_root_dir, self.gt_root_dir)
 
         self.image = Image.open(self.image_path)
