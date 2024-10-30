@@ -4,7 +4,7 @@ This Python script provides a graphical user interface (GUI) for identifying whi
 
 ## Demo
 ![Demo.png](https://github.com/Zhao-Qihao/Useful-Tools/blob/main/docs/demo.png)
-
+The bold red box signifies the selected box.
 ## Features
 
 - Load images from a folder or a single image file.
